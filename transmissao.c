@@ -34,48 +34,48 @@ int main() {
 
     printf("min: ");
     for (int i=0; i<c; i++) {   // função objetivo
-        printf("%dx%d0 + %dx%d1", cons[i].c, i+1, cons[i].c, i+1);
+        printf("%dx%d%d + %dx%d%d", cons[i].c, cons[i].a, cons[i].b, cons[i].c, cons[i].b, cons[i].a);
         if (i+1<c) printf(" + ");
     }
     printf(";\n");
 
     int p=1;    // flag que indica primeira variável da desigualdade
-    for (int i=0; i<c; i++) {   // deigualdade dos caminhos que saem da origem
+    for (int i=0; i<c; i++) {   // desigualdade dos caminhos que saem da origem
         if (cons[i].a == o) {
             if (p==1) {
-                printf("x%d0 ", i+1);
+                printf("x%d%d ", cons[i].a, cons[i].b);
                 p=0;
             } else {
-                printf("+ x%d0 ", i+1);
+                printf("+ x%d%d ", cons[i].a, cons[i].b);
             }
         }
         if (cons[i].b == o) {
             if (p==1) {
-                printf("x%d1 ", i+1);
+                printf("x%d%d ", cons[i].b, cons[i].a);
                 p=0;
             } else {
-                printf("+ x%d1 ", i+1);
+                printf("+ x%d%d ", cons[i].b, cons[i].a);
             }
         }
     }
     printf(">= %d;\n", dt);
 
     p=1;
-    for (int i=0; i<c; i++) {   // deigualdade dos caminhos que chegam ao destino
+    for (int i=0; i<c; i++) {   // desigualdade dos caminhos que chegam ao destino
         if (cons[i].b == d) {
             if (p==1) {
-                printf("x%d0 ", i+1);
+                printf("x%d%d ", cons[i].a, cons[i].b);
                 p=0;
             } else {
-                printf("+ x%d0 ", i+1);
+                printf("+ x%d%d ", cons[i].a, cons[i].b);
             }
         }
         if (cons[i].a == d) {
             if (p==1) {
-                printf("x%d1 ", i+1);
+                printf("x%d%d ", cons[i].b, cons[i].a);
                 p=0;
             } else {
-                printf("+ x%d1 ", i+1);
+                printf("+ x%d%d ", cons[i].b, cons[i].a);
             }
         }
     }
@@ -83,45 +83,45 @@ int main() {
 
     for (int i=0; i<c; i++) {   // desigualdades intermediárias
         // desigualdades em relação às conexões que chegam à sede
-        if (cons[i].a != o) {   // desigualdade da direção convencional
+        if (cons[i].a != o && cons[i].a != d) {   // desigualdade da direção convencional
             p=1;
             for (int j=0; j<c; j++) {
                 if (cons[j].b == cons[i].a && i!=j) {
                     if (p==1) {
-                        printf("x%d0 <= x%d0", i+1, j+1);
+                        printf("x%d%d <= x%d%d", cons[i].a, cons[i].b, cons[j].a, cons[j].b);
                         p=0;
                     } else {
-                        printf(" + x%d0", j+1);
+                        printf(" + x%d%d", cons[j].a, cons[j].b);
                     }
                 }
                 if (cons[j].a == cons[i].a && i!=j) {
                     if (p==1) {
-                        printf("x%d0 <= x%d1", i+1, j+1);
+                        printf("x%d%d <= x%d%d", cons[i].a, cons[i].b, cons[j].b, cons[j].a);
                         p=0;
                     } else {
-                        printf(" + x%d1", j+1);
+                        printf(" + x%d%d", cons[j].b, cons[j].a);
                     }
                 }
             }
             if (p==0) printf(";\n");
         }
-        if (cons[i].b != d) {   // desigualdade da direção contrária
+        if (cons[i].b != d && cons[i].b != o) {   // desigualdade da direção contrária
             p=1;
             for (int j=0; j<c; j++) {
                 if (cons[j].b == cons[i].b && i!=j) {
                     if (p==1) {
-                        printf("x%d1 <= x%d0", i+1, j+1);
+                        printf("x%d%d <= x%d%d", cons[i].b, cons[i].a, cons[j].a, cons[j].b);
                         p=0;
                     } else {
-                        printf(" + x%d0", j+1);
+                        printf(" + x%d%d", cons[j].a, cons[j].b);
                     }
                 }
                 if (cons[j].a == cons[i].b && i!=j) {
                     if (p==1) {
-                        printf("x%d1 <= x%d1", i+1, j+1);
+                        printf("x%d%d <= x%d%d", cons[i].b, cons[i].a, cons[j].b, cons[j].a);
                         p=0;
                     } else {
-                        printf(" + x%d1", j+1);
+                        printf(" + x%d%d", cons[j].b, cons[j].a);
                     }
                 }
             }
@@ -129,45 +129,45 @@ int main() {
         }
 
         // desigualdades em relação às conexões que saem da sede
-        if (cons[i].b != d) {   // desigualdade da direção convencional
+        if (cons[i].b != d && cons[i].b != o) {   // desigualdade da direção convencional
             p=1;
             for (int j=0; j<c; j++) {
                 if (cons[j].a == cons[i].b && i!=j) {
                     if (p==1) {
-                        printf("x%d0 >= x%d0 - x%d1", i+1, j+1, j+1);
+                        printf("x%d%d >= x%d%d - x%d%d", cons[i].a, cons[i].b, cons[j].a, cons[j].b, cons[j].b, cons[j].a);
                         p=0;
                     } else {
-                        printf(" + x%d0 - x%d1", j+1, j+1);
+                        printf(" + x%d%d - x%d%d", cons[j].a, cons[j].b, cons[j].b, cons[j].a);
                     }
                 }
                 if (cons[j].b == cons[i].b && i!=j) {
                     if (p==1) {
-                        printf("x%d0 >= x%d1 - x%d0", i+1, j+1, j+1);
+                        printf("x%d%d >= x%d%d - x%d%d", cons[i].a, cons[i].b, cons[j].b, cons[j].a, cons[j].a, cons[j].b);
                         p=0;
                     } else {
-                        printf(" + x%d1 - x%d0", j+1, j+1);
+                        printf(" + x%d%d - x%d%d", cons[j].b, cons[j].a, cons[j].a, cons[j].b);
                     }
                 }
             }
             if (p==0) printf(";\n");
         }
-        if (cons[i].a != o) {   // desigualdade da direção contrária
+        if (cons[i].a != o && cons[i].a != d) {   // desigualdade da direção contrária
             p=1;
             for (int j=0; j<c; j++) {
                 if (cons[j].a == cons[i].a && i!=j) {
                     if (p==1) {
-                        printf("x%d1 >= x%d0 - x%d1", i+1, j+1, j+1);
+                        printf("x%d%d >= x%d%d - x%d%d", cons[i].b, cons[i].a, cons[j].a, cons[j].b, cons[j].b, cons[j].a);
                         p=0;
                     } else {
-                        printf(" + x%d0 - x%d1", j+1, j+1);
+                        printf(" + x%d%d - x%d%d", cons[j].a, cons[j].b, cons[j].b, cons[j].a);
                     }
                 }
                 if (cons[j].b == cons[i].a && i!=j) {
                     if (p==1) {
-                        printf("x%d1 >= x%d1 - x%d0", i+1, j+1, j+1);
+                        printf("x%d%d >= x%d%d - x%d%d", cons[i].b, cons[i].a, cons[j].b, cons[j].a, cons[j].a, cons[j].b);
                         p=0;
                     } else {
-                        printf(" + x%d1 - x%d0", j+1, j+1);
+                        printf(" + x%d%d - x%d%d", cons[j].b, cons[j].a, cons[j].a, cons[j].b);
                     }
                 }
             }
@@ -177,16 +177,22 @@ int main() {
 
     for (int i=0; i<c; i++) {   // desigualdades que evitam fazer caminho inverso na origem ou no destino
         if (cons[i].a == o) {
-            printf("x%d1 = 0;\n", i+1);
+            printf("x%d%d = 0;\n", cons[i].b, cons[i].a);
+        }
+        if (cons[i].a == d) {
+            printf("x%d%d = 0;\n", cons[i].a, cons[i].b);
         }
         if (cons[i].b == d) {
-            printf("x%d1 = 0;\n", i+1);
+            printf("x%d%d = 0;\n", cons[i].b, cons[i].a);
+        }
+        if (cons[i].b == o) {
+            printf("x%d%d = 0;\n", cons[i].a, cons[i].b);
         }
     }
 
     printf("int ");
     for (int i=0; i<c; i++) {   // declara as variáveis como inteiros
-        printf("x%d0, x%d1", i+1, i+1);
+        printf("x%d%d, x%d%d", cons[i].a, cons[i].b, cons[i].b, cons[i].a);
         if (i+1<c) printf(", ");
     }
     printf(";\n");
