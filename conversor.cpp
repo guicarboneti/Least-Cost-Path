@@ -141,7 +141,7 @@ int main() {
     }
 
     cout << "int ";
-    for (int i = 0; i < var.size() - 1; i++) {
+    for (long unsigned int i = 0; i < var.size() - 1; i++) {
         cout << var[i] << ", ";
     }
     cout << var[var.size()-1] << ";" << endl;
