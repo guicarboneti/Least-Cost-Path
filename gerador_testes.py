@@ -29,7 +29,7 @@ print(inicio, fim, demanda)
 # Matriz com os pesos das arestas
 matriz = [[0 for i in range(arestas)] for i in range(arestas)]
 
-for _ in range(0, arestas):
+while (arestas != 0):
     a = randint(1, vertices)
     b = randint(1, vertices)
     custo = randint(min_custo, max_custo)
@@ -37,9 +37,11 @@ for _ in range(0, arestas):
         continue
 
     if (a != b and matriz[a][b] == 0 and matriz[b][a] == 0):
-        matriz[a][b] =  custo
-        matriz[b][a] =  custo
+        matriz[a][b] = custo
+        matriz[b][a] = custo
         print(a, b, custo)
+
+        arestas -= 1
         
 
 
